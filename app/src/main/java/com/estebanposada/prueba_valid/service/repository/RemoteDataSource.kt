@@ -1,6 +1,8 @@
 package com.estebanposada.prueba_valid.service.repository
 
-private class RemoteDataSource : DataSource {
+import com.estebanposada.prueba_valid.service.repository.model.ArtistResult
+
+private class RemoteDataSource() : DataSource {
 
 }
 

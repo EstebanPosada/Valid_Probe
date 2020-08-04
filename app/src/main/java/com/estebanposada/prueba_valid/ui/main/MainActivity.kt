@@ -1,8 +1,7 @@
 package com.estebanposada.prueba_valid.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.estebanposada.prueba_valid.R
+import androidx.appcompat.app.AppCompatActivity
 import com.estebanposada.prueba_valid.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

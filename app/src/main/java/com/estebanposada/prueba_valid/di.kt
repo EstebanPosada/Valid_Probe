@@ -2,11 +2,15 @@ package com.estebanposada.prueba_valid
 
 import android.app.Application
 import com.estebanposada.prueba_valid.service.repository.Api
+import com.estebanposada.prueba_valid.service.repository.MainRepository
+import com.estebanposada.prueba_valid.service.repository.MainRepositoryImpl
+import com.estebanposada.prueba_valid.ui.main.MainViewModel
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.bind.DateTypeAdapter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,7 +26,9 @@ fun Application.initDI() {
 }
 
 private val appModule = module {
+    viewModel { MainViewModel(get()) }
 
+    single { MainRepositoryImpl(get()) as MainRepository }
 }
 
 private val remoteModule = module {
@@ -47,7 +53,7 @@ private val remoteModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl("https://www.last.fm/api")
+            .baseUrl("https://ws.audioscrobbler.com/2.0/")
             .addConverterFactory(get() as GsonConverterFactory)
             .client(get() as OkHttpClient)
             .build()
