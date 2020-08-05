@@ -1,10 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/dimen_16dp"
     tools:context=".ui.detail.ArtistDetailFragment">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/dimen_24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/listeners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/name" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/listeners"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@id/url"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        tools:text="@string/listeners" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:autoLink="web"
+        android:linksClickable="true"
+        app:layout_constraintBottom_toTopOf="@id/streamable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listeners"
+        tools:text="@string/url" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/streamable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/imgSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/url"
+        tools:text="0" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgMedium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/streamable"
+        app:srcCompat="@drawable/abc_vector_test" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="null"
+        app:layout_constraintBottom_toBottomOf="@id/imgSmall"
+        app:layout_constraintEnd_toStartOf="@id/imgLarge"
+        app:layout_constraintStart_toEndOf="@id/imgSmall"
+        app:layout_constraintTop_toTopOf="@id/imgSmall"
+        app:srcCompat="@drawable/abc_vector_test" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="null"
+        app:layout_constraintBottom_toBottomOf="@id/imgSmall"
+        app:layout_constraintEnd_toStartOf="@id/imgExtra"
+        app:layout_constraintStart_toEndOf="@id/imgMedium"
+        app:layout_constraintTop_toTopOf="@id/imgSmall"
+        app:srcCompat="@drawable/abc_vector_test" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="null"
+        app:layout_constraintBottom_toBottomOf="@id/imgSmall"
+        app:layout_constraintEnd_toStartOf="@id/imgMega"
+        app:layout_constraintStart_toEndOf="@id/imgLarge"
+        app:layout_constraintTop_toTopOf="@id/imgSmall"
+        app:srcCompat="@drawable/abc_vector_test" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgMega"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="null"
+        app:layout_constraintBottom_toBottomOf="@id/imgSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgExtra"
+        app:layout_constraintTop_toTopOf="@id/imgSmall"
+        app:srcCompat="@drawable/abc_vector_test" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

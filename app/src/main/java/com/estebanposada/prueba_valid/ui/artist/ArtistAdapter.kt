@@ -10,7 +10,7 @@ import com.estebanposada.prueba_valid.service.model.Artist
 import kotlinx.android.synthetic.main.artist_view_item.view.*
 
 class ArtistAdapter : PagingDataAdapter<Artist, RecyclerView.ViewHolder>(ARTIST_COMPARATOR) {
-    var onItemClicked: ((String) -> Unit)? = null
+    var onItemClicked: ((Long) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
 //        ArtistViewHolder.create(parent)
@@ -23,7 +23,7 @@ class ArtistAdapter : PagingDataAdapter<Artist, RecyclerView.ViewHolder>(ARTIST_
         holder.itemView.apply {
             name.text = artistItem!!.name
 
-            setOnClickListener { onItemClicked?.invoke(artistItem.mbid)  }
+            setOnClickListener { onItemClicked?.invoke(artistItem.id)  }
         }
 
     }
@@ -34,7 +34,7 @@ class ArtistAdapter : PagingDataAdapter<Artist, RecyclerView.ViewHolder>(ARTIST_
                 oldItem.name == newItem.name
 
             override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean =
-                oldItem == newItem
+                oldItem.mbid == newItem.mbid && oldItem.name == newItem.name
         }
     }
 }

@@ -10,8 +10,13 @@ import com.estebanposada.prueba_valid.service.model.Artist
 @Dao
 interface ArtistDao {
 
+    @Query("SELECT COUNT(id) FROM Artist")
+    suspend fun artistCount(): Int
+
     @Query("SELECT * FROM Artist WHERE id = :id")
-    suspend fun findById(id: String): Artist
+    suspend fun findById(id: Long): Artist
+    @Query("SELECT * FROM Artist WHERE id = :id")
+    fun findByIds(id: Long): Artist
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(artists: List<Artist>)
@@ -21,5 +26,11 @@ interface ArtistDao {
 
     @Query("DELETE FROM Artist")
     suspend fun clearArtists()
+
+    @Query("SELECT * FROM Artist")
+    fun getAll(): List<Artist>
+
+    @Query("SELECT id FROM Artist")
+    suspend fun getArtistsKeys(): List<Long>
 
 }

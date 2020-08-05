@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 @Entity
 data class Artist(
     @field:SerializedName("name") val name: String,
-    @PrimaryKey @field:SerializedName("id") val id: Long,
+    @PrimaryKey(autoGenerate = true)  @field:SerializedName("id") val id: Long,
     @field:SerializedName("mbid") val mbid: String,
     @field:SerializedName("url") val url: String
 )

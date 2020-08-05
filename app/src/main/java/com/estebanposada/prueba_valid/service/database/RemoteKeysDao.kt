@@ -31,6 +31,12 @@ interface RemoteKeysDao {
     @Query("SELECT * FROM artist_keys WHERE artistId = :artistId")
     suspend fun remoteKeysArtistId(artistId: Long): RemoteKeys?
 
+    @Query("SELECT * FROM artist_keys WHERE artistId = :artistId")
+    fun remoteKeysArtistIdS(artistId: Long): RemoteKeys?
+
+    @Query("SELECT * FROM artist_keys")
+    fun getAll(): List<RemoteKeys>
+
     @Query("DELETE FROM artist_keys")
     suspend fun clearRemoteKeys()
 }

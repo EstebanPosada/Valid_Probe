@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
     fun getData(query: String): Flow<PagingData<Artist>>
+    suspend fun getArtistDetail(id: Long): Artist
 }

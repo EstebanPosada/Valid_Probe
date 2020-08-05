@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.estebanposada.prueba_valid.App
 import com.estebanposada.prueba_valid.EMPTY
 import com.estebanposada.prueba_valid.LAST_SEARCH_QUERY
 import com.estebanposada.prueba_valid.databinding.FragmentArtistsBinding
@@ -20,16 +21,16 @@ import com.estebanposada.prueba_valid.ui.main.MainViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class ArtistsFragment : Fragment() {
 
     private var _binding: FragmentArtistsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by viewModel()
-    private val adapter =
-        ArtistAdapter()
+    @Inject
+    lateinit var viewModel: MainViewModel
+    private val adapter = ArtistAdapter()
 
     private var searchJob: Job? = null
 
@@ -47,6 +48,7 @@ class ArtistsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentArtistsBinding.inflate(inflater, container, false)
+        (requireContext().applicationContext as App).appComponent.inject(this)
         return binding.root
     }
 

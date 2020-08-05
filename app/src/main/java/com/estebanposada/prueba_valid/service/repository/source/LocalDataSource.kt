@@ -5,7 +5,8 @@ import com.estebanposada.prueba_valid.service.model.Artist
 interface LocalDataSource {
     suspend fun isEmpty(): Boolean
     suspend fun saveAll(artists: List<Artist>)
-    suspend fun getTopArtist(): List<Artist>
-    suspend fun findById(id: String): Artist
+    suspend fun findById(id: Long): Artist
+    fun findByIds(id: Long): Artist
+    fun getAll(): List<Artist>
 
 }

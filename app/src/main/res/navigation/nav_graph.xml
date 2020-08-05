@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_artist_detail" >
         <argument
             android:name="id"
-            app:argType="string" />
+            app:argType="long" />
     </fragment>
 </navigation>
