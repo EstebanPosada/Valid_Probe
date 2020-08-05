@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.estebanposada.prueba_valid.EMPTY
+import com.estebanposada.prueba_valid.LAST_SEARCH_QUERY
 import com.estebanposada.prueba_valid.databinding.FragmentArtistsBinding
-import com.estebanposada.prueba_valid.service.repository.model.ArtistResult
-import com.estebanposada.prueba_valid.ui.main.ArtistAdapter
 import com.estebanposada.prueba_valid.ui.main.MainViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ArtistsFragment : Fragment() {
@@ -25,7 +28,19 @@ class ArtistsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by viewModel()
-    private val adapter = ArtistAdapter()
+    private val adapter =
+        ArtistAdapter()
+
+    private var searchJob: Job? = null
+
+    private fun search(query: String) {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.searchArtists(query).collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,12 +55,11 @@ class ArtistsFragment : Fragment() {
 
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.rvArtists.addItemDecoration(decoration)
-        setupScrollListener()
+
         initAdapter()
-        if (viewModel.result.value == null) {
-            viewModel.searchRepo("")
-        }
-        initSearch("")
+        val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: EMPTY
+        search(query)
+        initSearch(query)
 
         adapter.onItemClicked = {
             view?.findNavController().navigate(
@@ -54,25 +68,40 @@ class ArtistsFragment : Fragment() {
                 )
             )
         }
+        binding.retryButton.setOnClickListener { adapter.retry() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(LAST_SEARCH_QUERY, binding.search.text.trim().toString())
     }
 
     private fun initAdapter() {
-        binding.rvArtists.adapter = adapter
-        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is ArtistResult.Success -> {
-//                    showEmptyList(result.data.isEmpty())
-                    adapter.submitList(result.data)
-                }
-                is ArtistResult.Error -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "\uD83D\uDE28 Wooops $result.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+        binding.rvArtists.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = ArtistLoadStateAdapter { adapter.retry() },
+            footer = ArtistLoadStateAdapter { adapter.retry() }
+        )
+        adapter.addLoadStateListener { loadState ->
+            // Only show the list if refresh succeeds.
+            binding.rvArtists.isVisible = loadState.source.refresh is LoadState.NotLoading
+            // Show loading spinner during initial load or refresh.
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails.
+            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    requireContext(),
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        })
+        }
     }
 
     private fun initSearch(query: String) {
@@ -99,24 +128,9 @@ class ArtistsFragment : Fragment() {
     private fun updateRepoListFromInput() {
         binding.search.text!!.trim().let {
             if (it.isNotEmpty()) {
-                binding.rvArtists.scrollToPosition(0)
-                viewModel.searchRepo(it.toString())
+                search(it.toString())
             }
         }
-    }
-
-    private fun setupScrollListener() {
-        val layoutManager = binding.rvArtists.layoutManager as LinearLayoutManager
-        binding.rvArtists.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val totalItemCount = layoutManager.itemCount
-                val visibleItemCount = layoutManager.childCount
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-
-                viewModel.listScrolled(visibleItemCount, lastVisibleItem, totalItemCount)
-            }
-        })
     }
 
     override fun onDestroyView() {

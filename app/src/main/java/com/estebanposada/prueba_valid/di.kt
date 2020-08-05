@@ -1,6 +1,7 @@
 package com.estebanposada.prueba_valid
 
 import android.app.Application
+import com.estebanposada.prueba_valid.service.database.AppDataBase
 import com.estebanposada.prueba_valid.service.repository.Api
 import com.estebanposada.prueba_valid.service.repository.MainRepository
 import com.estebanposada.prueba_valid.service.repository.MainRepositoryImpl
@@ -28,7 +29,17 @@ fun Application.initDI() {
 private val appModule = module {
     viewModel { MainViewModel(get()) }
 
-    single { MainRepositoryImpl(get()) as MainRepository }
+    single {
+        MainRepositoryImpl(
+            get(),
+            "829751643419a7128b7ada50de590067"
+        ) as MainRepository
+    }
+    //single(named("apiKey")) { "829751643419a7128b7ada50de590067" }
+
+    single { AppDataBase.build(get()) }
+
+
 }
 
 private val remoteModule = module {

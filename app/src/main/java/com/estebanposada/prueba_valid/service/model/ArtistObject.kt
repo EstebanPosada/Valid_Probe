@@ -1,4 +1,4 @@
-package com.estebanposada.prueba_valid.service.repository.model
+package com.estebanposada.prueba_valid.service.model
 
 import com.google.gson.annotations.SerializedName
 

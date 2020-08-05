@@ -1,43 +1,29 @@
 package com.estebanposada.prueba_valid.ui.main
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.estebanposada.prueba_valid.service.model.Artist
 import com.estebanposada.prueba_valid.service.repository.MainRepository
-import com.estebanposada.prueba_valid.service.repository.model.ArtistResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {
+    private var currentQueryValue: String? = null
 
-    companion object {
-        private const val VISIBLE_THRESHOLD = 5
-    }
+    private var currentSearchResult: Flow<PagingData<Artist>>? = null
 
-    private val queryLiveData = MutableLiveData<String>()
-    val result: LiveData<ArtistResult> = queryLiveData.switchMap { query ->
-        liveData {
-            val repos = repository.getData(query).asLiveData(Dispatchers.Main)
-            emitSource(repos)
+    fun searchArtists(query: String): Flow<PagingData<Artist>> {
+        val lastResult = currentSearchResult
+        if (query == currentQueryValue && lastResult != null) {
+            return lastResult
         }
-    }
-
-    /**
-     * Search a repository based on a query string.
-     */
-    fun searchRepo(queryString: String) {
-        queryLiveData.postValue(queryString)
-    }
-
-    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
-        if (visibleItemCount + lastVisibleItemPosition + VISIBLE_THRESHOLD >= totalItemCount) {
-            val immutableQuery = queryLiveData.value
-            if (immutableQuery != null) {
-                viewModelScope.launch {
-                    repository.requestMore(immutableQuery)
-                }
-            }
-        }
+        currentQueryValue = query
+        val newResult: Flow<PagingData<Artist>> = repository.getData(query).cachedIn(viewModelScope)
+        currentSearchResult = newResult
+        return newResult
     }
 
 }

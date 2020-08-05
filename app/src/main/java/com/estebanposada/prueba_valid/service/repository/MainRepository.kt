@@ -1,9 +1,10 @@
 package com.estebanposada.prueba_valid.service.repository
 
-import com.estebanposada.prueba_valid.service.repository.model.ArtistResult
+import androidx.paging.PagingData
+import com.estebanposada.prueba_valid.service.model.Artist
+import com.estebanposada.prueba_valid.service.model.ArtistResult
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
-    suspend fun getData(query: String): Flow<ArtistResult>
-    suspend fun requestMore(query: String)
+    fun getData(query: String): Flow<PagingData<Artist>>
 }

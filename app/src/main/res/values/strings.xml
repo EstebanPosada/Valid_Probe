@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Prueba_Valid</string>
-    <string name="search">search</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="name">Name</string>
+    <string name="listeners">%s listeners</string>
+    <string name="url">url</string>
+    <string name="duration">Duration: %s</string>
+    <string name="artist">Artist</string>
+    <string name="retry">Retry</string>
+
 </resources>

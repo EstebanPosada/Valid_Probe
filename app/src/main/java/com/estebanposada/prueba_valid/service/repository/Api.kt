@@ -1,7 +1,7 @@
 package com.estebanposada.prueba_valid.service.repository
 
-import com.estebanposada.prueba_valid.service.repository.model.ArtistObject
-import com.estebanposada.prueba_valid.service.repository.model.TopTracks
+import com.estebanposada.prueba_valid.service.model.ArtistObject
+import com.estebanposada.prueba_valid.service.model.TopTracks
 import retrofit2.http.GET
 import retrofit2.http.Query
 
