@@ -8,20 +8,33 @@
     android:paddingVertical="@dimen/row_item_margin_vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/artist_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/artist"
+        android:textSize="@dimen/dimen_18sp"
+        app:layout_constraintBottom_toTopOf="@id/name"
+        app:layout_constraintEnd_toStartOf="@id/length"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/dimen_24sp"
+        android:textSize="@dimen/dimen_26sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/listeners"
+        app:layout_constraintEnd_toStartOf="@id/length"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/name" />
 
+
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/listeners"
+        android:id="@+id/length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"

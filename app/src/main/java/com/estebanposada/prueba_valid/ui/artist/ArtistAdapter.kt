@@ -22,8 +22,9 @@ class ArtistAdapter : PagingDataAdapter<Artist, RecyclerView.ViewHolder>(ARTIST_
         val artistItem = getItem(position)
         holder.itemView.apply {
             name.text = artistItem!!.name
-
-            setOnClickListener { onItemClicked?.invoke(artistItem.id)  }
+            listeners.text =
+                String.format(context.getString(R.string.listeners), artistItem.listeners)
+            setOnClickListener { onItemClicked?.invoke(artistItem.id) }
         }
 
     }

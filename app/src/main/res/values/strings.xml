@@ -4,8 +4,9 @@
     <string name="name">Name</string>
     <string name="listeners">%s listeners</string>
     <string name="url">url</string>
-    <string name="duration">Duration: %s</string>
+    <string name="length">Length: %s</string>
     <string name="artist">Artist</string>
     <string name="retry">Retry</string>
+    <string name="search_track">Search Track</string>
 
 </resources>

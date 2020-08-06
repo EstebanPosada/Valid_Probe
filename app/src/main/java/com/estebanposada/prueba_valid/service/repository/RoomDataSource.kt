@@ -17,7 +17,5 @@ class RoomDataSource(db: AppDataBase) : LocalDataSource {
     override suspend fun findById(id: Long): Artist =
         artistDao.findById(id)
 
-    override fun findByIds(id: Long): Artist = artistDao.findByIds(id)
-
-    override fun getAll(): List<Artist> = artistDao.getAll()
+    override suspend fun getAll(): List<Artist> = artistDao.getAll()
 }

@@ -4,53 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.artist.ArtistsFragment">
+    tools:context=".ui.track.TracksFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/search_label"
+        android:id="@+id/search_track_label"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@id/go_tracks"
+        app:layout_constraintEnd_toStartOf="@id/go_artist"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/search"
+            android:id="@+id/search_track"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/search"
+            android:hint="@string/search_track"
             android:imeOptions="actionSearch"
             android:inputType="textNoSuggestions"
             android:selectAllOnFocus="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/go_tracks"
+        android:id="@+id/go_artist"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go Tracks"
-        app:layout_constraintBottom_toBottomOf="@id/search_label"
+        app:layout_constraintBottom_toBottomOf="@id/search_track_label"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/search_label"
-        app:layout_constraintTop_toTopOf="@id/search_label" />
+        app:layout_constraintStart_toEndOf="@id/search_track_label"
+        app:layout_constraintTop_toTopOf="@id/search_track_label" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_artists"
+        android:id="@+id/rv_tracks"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingVertical="12dp"
+        android:paddingVertical="8dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_label"
-        tools:ignore="UnusedAttribute"
+        app:layout_constraintTop_toBottomOf="@id/search_track_label"
         tools:listitem="@layout/artist_view_item" />
 
     <ProgressBar

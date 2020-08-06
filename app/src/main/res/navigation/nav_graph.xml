@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/artistDetailFragment"
-        android:name="com.estebanposada.prueba_valid.ui.detail.ArtistDetailFragment"
+        android:name="com.estebanposada.prueba_valid.ui.artist.detail.ArtistDetailFragment"
         android:label="fragment_artist_detail"
         tools:layout="@layout/fragment_artist_detail" >
         <argument

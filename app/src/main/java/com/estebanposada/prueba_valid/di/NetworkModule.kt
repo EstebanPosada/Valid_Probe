@@ -1,7 +1,11 @@
 package com.estebanposada.prueba_valid.di
 
+import android.content.Context
 import com.estebanposada.prueba_valid.NETWORK_TIME_OUT
+import com.estebanposada.prueba_valid.service.database.AppDataBase
 import com.estebanposada.prueba_valid.service.repository.Api
+import com.estebanposada.prueba_valid.service.repository.RoomDataSource
+import com.estebanposada.prueba_valid.service.repository.source.LocalDataSource
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.bind.DateTypeAdapter
@@ -13,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 class NetworkModule {
@@ -50,5 +55,14 @@ class NetworkModule {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }
+
+    @Provides
+    @Singleton
+    fun providesLocalDataSource(context: Context): LocalDataSource =
+        RoomDataSource(AppDataBase.build(context))
+
+    @Provides
+    @Singleton
+    fun provideDataBase(context: Context) = AppDataBase.build(context)
 
 }

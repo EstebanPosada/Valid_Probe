@@ -20,22 +20,22 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.estebanposada.prueba_valid.service.model.RemoteKeys
+import com.estebanposada.prueba_valid.service.model.RemoteKeysArtist
 
 @Dao
-interface RemoteKeysDao {
+interface RemoteKeysArtistDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(remoteKey: List<RemoteKeys>)
+    suspend fun insertAll(remoteKeyArtist: List<RemoteKeysArtist>)
 
     @Query("SELECT * FROM artist_keys WHERE artistId = :artistId")
-    suspend fun remoteKeysArtistId(artistId: Long): RemoteKeys?
+    suspend fun remoteKeysArtistId(artistId: Long): RemoteKeysArtist?
 
     @Query("SELECT * FROM artist_keys WHERE artistId = :artistId")
-    fun remoteKeysArtistIdS(artistId: Long): RemoteKeys?
+    fun remoteKeysArtistIdS(artistId: Long): RemoteKeysArtist?
 
     @Query("SELECT * FROM artist_keys")
-    fun getAll(): List<RemoteKeys>
+    fun getAll(): List<RemoteKeysArtist>
 
     @Query("DELETE FROM artist_keys")
     suspend fun clearRemoteKeys()

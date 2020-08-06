@@ -20,8 +20,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "artist_keys")
-data class RemoteKeys(
+data class RemoteKeysArtist(
         @PrimaryKey val artistId: Long,
+        val prevKey: Int?,
+        val nextKey: Int?
+)
+
+@Entity(tableName = "tracks_keys")
+data class RemoteKeysTrack(
+        @PrimaryKey val tracktId: Long,
         val prevKey: Int?,
         val nextKey: Int?
 )

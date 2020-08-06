@@ -1,8 +1,7 @@
-package com.estebanposada.prueba_valid.service.repository
+package com.estebanposada.prueba_valid.service.repository.source
 
 import androidx.paging.PagingData
 import com.estebanposada.prueba_valid.service.model.Artist
-import com.estebanposada.prueba_valid.service.model.ArtistResult
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {

@@ -7,25 +7,20 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.estebanposada.prueba_valid.PAGE_INDEX
 import com.estebanposada.prueba_valid.service.database.AppDataBase
-import com.estebanposada.prueba_valid.service.model.Artist
-import com.estebanposada.prueba_valid.service.model.RemoteKeysArtist
-import com.estebanposada.prueba_valid.service.model.toRoomArtist
+import com.estebanposada.prueba_valid.service.model.RemoteKeysTrack
+import com.estebanposada.prueba_valid.service.model.Track
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException
 
 @OptIn(ExperimentalPagingApi::class)
-class ArtistsRemoteMediator(
+class TrackRemoteMediator(
     private val database: AppDataBase,
     private val apiKey: String,
     private val query: String,
     private val service: Api
-
-) : RemoteMediator<Int, Artist>() {
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, Artist>
-    ): MediatorResult {
+) : RemoteMediator<Int, Track>() {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, Track>): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -57,23 +52,23 @@ class ArtistsRemoteMediator(
         }
 
         try {
-            val apiResponse = service.fetchTopArtists(apiKey, page, state.config.pageSize)
+            val apiResponse = service.fetchTopTracks(apiKey, page, state.config.pageSize)
 
-            val artists = apiResponse.topArtists.artist.map { it.toRoomArtist() }
-            val endOfPaginationReached = artists.isEmpty()
+            val tracks = apiResponse.tracks.track
+            val endOfPaginationReached = tracks.isEmpty()
             database.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH && query.isEmpty()) {
                     database.remoteKeysDao().clearRemoteKeys()
-                    database.artistDao().clearArtists()
+                    database.trackDao().clearTracks()
                 }
                 val prevKey = if (page == PAGE_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                database.artistDao().insertAll(artists)
-                val k = database.artistDao().getArtistsKeys().map {
-                    RemoteKeysArtist(artistId = it, prevKey = prevKey, nextKey = nextKey)
+                database.trackDao().insertAll(tracks)
+                val k = database.trackDao().getKeys().map {
+                    RemoteKeysTrack(tracktId = it, prevKey = prevKey, nextKey = nextKey)
                 }
-                database.remoteKeysDao().insertAll(k)
+                database.remoteKeysTrackDao().insertAll(k)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {
@@ -83,34 +78,34 @@ class ArtistsRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Artist>): RemoteKeysArtist? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Track>): RemoteKeysTrack? {
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
-            ?.let { artist ->
+            ?.let { track ->
                 // Get the remote keys of the last item retrieved
-                database.remoteKeysDao().remoteKeysArtistId(artist.id)
+                database.remoteKeysTrackDao().remoteKeysTrackId(track.id)
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Artist>): RemoteKeysArtist? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Track>): RemoteKeysTrack? {
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-            ?.let { artist ->
+            ?.let { track ->
                 // Get the remote keys of the first items retrieved
-                database.remoteKeysDao().remoteKeysArtistId(artist.id)
+                database.remoteKeysTrackDao().remoteKeysTrackId(track.id)
             }
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, Artist>
-    ): RemoteKeysArtist? {
+        state: PagingState<Int, Track>
+    ): RemoteKeysTrack? {
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { artistId ->
-                database.remoteKeysDao().remoteKeysArtistId(artistId)
+            state.closestItemToPosition(position)?.id?.let { repoId ->
+                database.remoteKeysTrackDao().remoteKeysTrackId(repoId)
             }
         }
     }

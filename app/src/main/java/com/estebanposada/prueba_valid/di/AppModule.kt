@@ -1,12 +1,12 @@
 package com.estebanposada.prueba_valid.di
 
-import android.content.Context
 import com.estebanposada.prueba_valid.service.database.AppDataBase
 import com.estebanposada.prueba_valid.service.repository.Api
-import com.estebanposada.prueba_valid.service.repository.MainRepository
 import com.estebanposada.prueba_valid.service.repository.MainRepositoryImpl
-import com.estebanposada.prueba_valid.service.repository.RoomDataSource
+import com.estebanposada.prueba_valid.service.repository.TrackRepositoryImpl
 import com.estebanposada.prueba_valid.service.repository.source.LocalDataSource
+import com.estebanposada.prueba_valid.service.repository.source.MainRepository
+import com.estebanposada.prueba_valid.service.repository.source.TrackRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -23,15 +23,18 @@ class AppModule {
     @Provides
     @Singleton
     fun providesMainRepository(
-        context: Context,
+        db: AppDataBase,
         localDataSource: LocalDataSource,
         service: Api,
         @Named("apiKey") apiKey: String
     ): MainRepository =
-        MainRepositoryImpl(AppDataBase.build(context), localDataSource, service, apiKey)
+        MainRepositoryImpl(db, localDataSource, service, apiKey)
 
     @Provides
     @Singleton
-    fun providesLocalDataSource(context: Context): LocalDataSource =
-        RoomDataSource(AppDataBase.build(context))
+    fun provideTrackRepository(
+        db: AppDataBase,
+        service: Api,
+        @Named("apiKey") apiKey: String
+    ): TrackRepository = TrackRepositoryImpl(db, service, apiKey)
 }

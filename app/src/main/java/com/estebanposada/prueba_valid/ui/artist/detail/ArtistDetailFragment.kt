@@ -1,5 +1,6 @@
-package com.estebanposada.prueba_valid.ui.detail
+package com.estebanposada.prueba_valid.ui.artist.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.estebanposada.prueba_valid.App
+import com.estebanposada.prueba_valid.R
 import com.estebanposada.prueba_valid.databinding.FragmentArtistDetailBinding
-import com.estebanposada.prueba_valid.ui.main.MainViewModel
+import com.estebanposada.prueba_valid.ui.artist.MainViewModel
+import com.estebanposada.prueba_valid.ui.track.TrackActivity
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 
@@ -36,15 +40,25 @@ class ArtistDetailFragment : Fragment() {
 
         args.id
         viewModel.getArtistDetail(args.id)
-        viewModel.detail.observe(viewLifecycleOwner, Observer {
+        viewModel.detail.observe(viewLifecycleOwner, Observer { it ->
             it.let { artist ->
                 binding.apply {
+                    val imageViews = listOf(imgSmall, imgMedium, imgLarge, imgExtra, imgMega)
                     name.text = artist.name
-                    listeners.text = artist.name
+                    listeners.text = String.format(getString(R.string.listeners), artist.listeners)
+                    artist.image.forEachIndexed { index, image ->
+                        Picasso.get().load(image.text).fit().into(imageViews[index])
+                    }
+                    url.text = artist.url
+                    streamable.text = artist.streamable
                 }
 
             }
         })
+        binding.goTracks.setOnClickListener {
+            startActivity(Intent(requireContext(), TrackActivity::class.java))
+            requireActivity().finish()
+        }
 
     }
 

@@ -6,7 +6,6 @@ interface LocalDataSource {
     suspend fun isEmpty(): Boolean
     suspend fun saveAll(artists: List<Artist>)
     suspend fun findById(id: Long): Artist
-    fun findByIds(id: Long): Artist
-    fun getAll(): List<Artist>
+    suspend fun getAll(): List<Artist>
 
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_track"
+    app:startDestination="@id/tracksFragment">
+    <fragment
+        android:id="@+id/tracksFragment"
+        android:name="com.estebanposada.prueba_valid.ui.track.TracksFragment"
+        android:label="fragment_tracks"
+        tools:layout="@layout/fragment_tracks" >
+        <action
+            android:id="@+id/action_tracksFragment_to_trackDetailFragment"
+            app:destination="@id/trackDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackDetailFragment"
+        android:name="com.estebanposada.prueba_valid.ui.track.detail.TrackDetailFragment"
+        android:label="fragment_track_detail"
+        tools:layout="@layout/fragment_track_detail" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+</navigation>

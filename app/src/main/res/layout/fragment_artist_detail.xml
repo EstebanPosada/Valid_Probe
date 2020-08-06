@@ -5,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/dimen_16dp"
-    tools:context=".ui.detail.ArtistDetailFragment">
+    tools:context=".ui.artist.detail.ArtistDetailFragment">
+
+    <Button
+        android:id="@+id/go_tracks"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go Tracks"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"
@@ -41,6 +54,7 @@
         android:linksClickable="true"
         app:layout_constraintBottom_toTopOf="@id/streamable"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listeners"
         tools:text="@string/url" />
@@ -60,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="null"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imgMedium"
         app:layout_constraintStart_toStartOf="parent"
